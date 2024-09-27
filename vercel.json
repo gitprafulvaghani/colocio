@@ -1,0 +1,16 @@
+{
+    "crons": [
+      {
+        "path": "/api/cron/test",
+        "schedule": "* * * * *"
+      },
+      {
+        "path": "/api/cron/page-views",
+        "schedule": "0 0 * * *"
+      },
+      {
+        "path": "/api/cron/followers-count",
+        "schedule": "0 0 * * *"
+      }
+    ]
+}

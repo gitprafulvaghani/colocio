@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link
+			rel="shortcut icon"
+			href="%sveltekit.assets%/favicon.svg"
+			type="image/svg+xml"
+		/>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+		%sveltekit.head%
+	</head>
+
+	<script>
+		//TODO: Update Googla Analytics here
+		// window.fbAsyncInit = function () {
+		// 	FB.init({
+		// 		appId: "1392628308266502",
+		// 		cookie: true,
+		// 		xfbml: false,
+		// 		version: "v18.0",
+		// 	});
+		// };
+		// (function (d, s, id) {
+		// 	var js,
+		// 		fjs = d.getElementsByTagName(s)[0];
+		// 	if (d.getElementById(id)) return;
+		// 	js = d.createElement(s);
+		// 	js.id = id;
+		// 	js.src = "https://connect.facebook.net/en_US/sdk.js";
+		// 	fjs.parentNode.insertBefore(js, fjs);
+		// })(document, "script", "facebook-jssdk");
+	</script>
+
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents">%sveltekit.body%</div>
+	</body>
+</html>

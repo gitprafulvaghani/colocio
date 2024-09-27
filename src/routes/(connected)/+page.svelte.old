@@ -1,0 +1,339 @@
+<script lang="ts">
+  import { onMount } from 'svelte';
+  import {
+    bool_success_onboarding,
+    is_user_connected,
+  } from '$lib/stores/stores';
+  import { FacebookService } from '$lib/services/FacebookService';
+
+  // Component import
+  import SectionTitle from '$lib/components/SectionTitle.svelte';
+  import ModalSuccessOnBoarding from '$lib/components/ModalSuccessOnBoarding.svelte';
+  import Loader from '$lib/components/Loader.svelte';
+  import type { FacebookCampaignObject } from '$types/facebookDataTypes';
+
+  // service reference
+  let fbService = new FacebookService('test_token');
+  // let fbService = new FacebookService(event);
+
+  // UI variables
+  let allCampaigns: FacebookCampaignObject[] = [];
+
+  let allFBImages = [];
+  let allMedia = [];
+  let allBuckets = [];
+
+  let selectedFbFile: File | null;
+  let selectedFile: File | null;
+  let isLoading = true;
+
+  function transformDate(input: string): string {
+    const newDate = new Date(input);
+    return newDate.toLocaleString();
+    // data._supaClient.
+  }
+
+  async function openFileDialog(useColocio: boolean) {
+    // consider adding callback method
+    // bring native open file dialog
+    // by creating temporary DOM element
+    let input = document.createElement('input');
+    input.type = 'file';
+    input.multiple = false;
+    input.onchange = async () => {
+      // get only the first file available
+      if (input.files) {
+        if (useColocio) {
+          selectedFile = input.files[0];
+        } else {
+          selectedFbFile = input.files[0];
+        }
+
+        // await callback();
+      }
+
+      // remove this element after the usage
+      input.remove();
+    };
+
+    // perform "click" event on this element
+    input.click();
+  }
+
+  // uploads the file to public bucket
+  async function performFileUpload() {
+    if (selectedFile != null) {
+      console.log('Performing Colocio upload...');
+      console.log(response);
+
+      //TODO: adjust UI based on response
+    }
+  }
+
+  async function performFacebookMediaUpload() {
+    if (selectedFbFile != null) {
+      console.log('Performing Facebook upload...');
+      const response = await fbService.uploadImage(selectedFbFile);
+    }
+  }
+
+  //TODO: Adjust the tooltips later (new Clickup task ?)
+  let tooltips = {
+    schedule:
+      'A snapshot of your posts and ads. Click on a promotion to see more details or click on Manage schedule to view all pomotions.',
+    engagement:
+      'You audience has engagement with your promotions within your selected period.',
+    global_growth: 'You overall growth within your selected period.',
+  };
+
+  onMount(async () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const reset = urlParams.get('reset');
+    if (reset && reset == '1') {
+      alert('Password reset with success!');
+    }
+    console.log('Main Page loads...');
+
+    // get all campaigns from the service
+    allCampaigns = await fbService.getAllCampaigns();
+
+    allFBImages = await fbService.getAllImages();
+
+    isLoading = false;
+
+    const loadScript = async () => {
+      return new Promise<void>((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src =
+          'https://www.paypal.com/sdk/js?client-id=Aep0ZMOHlbImU6YA1cyivu0NtmY0k7aKQYWCD6Nvevdwgk5QxekrUyta0WaP_aDTPycce_rqAD3on3yE&vault=true&intent=subscription';
+        script.async = true;
+        document.body.appendChild(script);
+
+        script.onload = () => resolve();
+        script.onerror = () =>
+          reject(new Error('Error loading the PayPal script.'));
+      });
+    };
+
+    const initializePayPalButtons = async () => {
+      try {
+        await loadScript();
+        paypal
+          .Buttons({
+            createSubscription: function (data, actions) {
+              return actions.subscription.create({
+                plan_id: 'P-9UK61358X3903612NMZTOMPI', // Creates the subscription
+              });
+            },
+            onApprove: function (data, actions) {
+              alert(
+                'You have successfully subscribed to ' + data.subscriptionID
+              ); // Optional message given to subscriber
+            },
+          })
+          .render('#paypal-button-container'); // Renders the PayPal button
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    initializePayPalButtons();
+  });
+</script>
+
+<svelte:head>
+  <title>Main | Colocio</title>
+  <meta
+    name="description"
+    content="Main page of the Colocio app"
+  />
+  <meta
+    name="keywords"
+    content="colocio, ai, ads, facebook, meta, facebook ads, campaign"
+  />
+</svelte:head>
+
+<main class="flex flex-col gap-5 overflow-y-auto p-4">
+  <div id="paypal-button-container"></div>
+  <hr class="h-px border-0 bg-gray-200" />
+  <SectionTitle
+    tippyContent={tooltips.schedule}
+    tippyId={'schedule-tooltip'}
+  >
+    <p slot="title">Facebook promotions overview</p>
+  </SectionTitle>
+  {#if isLoading}
+    <Loader />
+  {:else}
+    <!-- make better -->
+    <table class="table-auto">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Objective</th>
+          <th>Budget</th>
+          <th>STATUS</th>
+          <th>Start time</th>
+          <th>End time</th>
+        </tr>
+      </thead>
+      <tbody>
+        {#each allCampaigns as cmpg}
+          <tr>
+            <td><code>{cmpg.id}</code></td>
+            <td>{cmpg.name}</td>
+            <td>{cmpg.objective}</td>
+            <td>{cmpg.daily_budget}</td>
+            <td>{cmpg.status}</td>
+            <td>{transformDate(cmpg.start_time)}</td>
+            <td>{transformDate(cmpg.stop_time)}</td>
+          </tr>
+        {/each}
+      </tbody>
+    </table>
+  {/if}
+
+  <hr class="h-px border-0 bg-gray-200" />
+  <SectionTitle
+    tippyContent={tooltips.engagement}
+    tippyId={'engagement-tooltip'}
+  >
+    <p slot="title">Facebook media</p>
+  </SectionTitle>
+  <h2 class="p-2">Upload new Facebook media</h2>
+  <div class="flex flex-col items-start">
+    <div class="flex basis-1 flex-row">
+      <button
+        type="button"
+        class="items-center justify-center rounded-md bg-blue-700 px-5 py-2.5 text-sm font-medium text-white shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-blue-600 sm:col-start-1 sm:mt-0"
+        on:click={() => openFileDialog(false)}
+      >
+        Select file...
+      </button>
+
+      <p class="p-1">
+        Selected upload file: {selectedFbFile?.name}, size: {selectedFbFile?.size}
+        bytes
+      </p>
+    </div>
+    <div class="flex flex-col">
+      <p class="p-1">Enter Facebook Campaign ID</p>
+      <input
+        type="text"
+        id="fb-campaign-id"
+        placeholder="Facebook Campaign ID"
+      />
+    </div>
+    <div>
+      <button
+        type="button"
+        class="items-center justify-center rounded-md bg-blue-700 px-5 py-2.5 text-sm font-medium text-white shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-blue-600 sm:col-start-1 sm:mt-0"
+        on:click={performFacebookMediaUpload}
+      >
+        Upload to Facebook
+      </button>
+    </div>
+  </div>
+  <h2>Uploaded Facebook media</h2>
+  {#each allFBImages as fbImage}
+    <div>
+      <p>ID: <code>{fbImage.id}</code></p>
+      <p>Name: {fbImage.name}</p>
+      <p>Hash: <code>{fbImage.hash}</code></p>
+    </div>
+  {/each}
+  <h2>Current access token</h2>
+  <code class="flex break-all bg-gray-500 text-green-200">
+    {fbService.getCurrentAccessToken()}
+  </code>
+
+  <hr class="h-px border-0 bg-gray-200" />
+  <SectionTitle
+    tippyContent={tooltips.engagement}
+    tippyId={'engagement-tooltip'}
+  >
+    <p slot="title">Colocio Media</p>
+  </SectionTitle>
+  <h2>Available buckets</h2>
+  <table class="table-auto">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Owner</th>
+        <th>Public</th>
+        <th>Allowed types</th>
+        <th>Created at</th>
+        <th>Updated at</th>
+      </tr>
+    </thead>
+    <tbody>
+      {#each allBuckets as bucket}
+        <tr>
+          <td>{bucket.id}</td>
+          <td>{bucket.name}</td>
+          <td>{bucket.owner}</td>
+          <td>{bucket.public}</td>
+          <td>{bucket.allowed_mime_types}</td>
+          <td>{transformDate(bucket.created_at)}</td>
+          <td>{transformDate(bucket.updated_at)}</td>
+        </tr>
+      {/each}
+    </tbody>
+  </table>
+
+  <h2>Uploaded Colocio media in <code>offerings</code> bucket</h2>
+  <table class="table-auto">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>MIME-Type</th>
+        <th>Size (bytes)</th>
+        <th>Created at</th>
+        <th>Updated at</th>
+      </tr>
+    </thead>
+    <tbody>
+      {#each allMedia as media}
+        <tr>
+          <td><code class="text-sm">{media.id}</code></td>
+          <td>{media.name}</td>
+          <td>{media.metadata.mimetype}</td>
+          <td>{media.metadata.size}</td>
+          <td>{transformDate(media.created_at)}</td>
+          <td>{transformDate(media.updated_at)}</td>
+        </tr>
+      {/each}
+    </tbody>
+  </table>
+  <div class="flex flex-col">
+    <div class="flex flex-row items-start p-1">
+      <button
+        type="button"
+        class="items-center justify-center rounded-md bg-blue-700 px-5 py-2.5 text-sm font-medium text-white shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-blue-600 sm:col-start-1 sm:mt-0"
+        on:click={() => openFileDialog(true)}
+      >
+        Select file...
+      </button>
+      <p class="p-1">
+        Selected file: {selectedFile?.name}, size: {selectedFile?.size} bytes
+      </p>
+    </div>
+
+    <div class="p-1">
+      <button
+        type="button"
+        class="items-center justify-center rounded-md bg-blue-700 px-5 py-2.5 text-sm font-medium text-white shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-blue-600 sm:col-start-1 sm:mt-0"
+        on:click={performFileUpload}
+      >
+        Upload to Colocio
+      </button>
+    </div>
+  </div>
+</main>
+
+{#if $bool_success_onboarding}
+  <ModalSuccessOnBoarding />
+{/if}
