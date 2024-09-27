@@ -1,0 +1,1 @@
+export { default as component } from "../../../../src/routes/(connected)/schedule/+page.svelte";

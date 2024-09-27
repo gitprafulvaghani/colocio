@@ -1,0 +1,152 @@
+{
+	"/(not-connected)": [],
+	"/(non-dashboard)": [
+		"src/routes/(non-dashboard)/+layout.ts",
+		"src/routes/(non-dashboard)/+layout.server.ts"
+	],
+	"/(connected)": [
+		"src/routes/(connected)/+layout.ts",
+		"src/routes/(connected)/+layout.server.ts",
+		"src/routes/(connected)/+layout.ts",
+		"src/routes/(connected)/+layout.server.ts"
+	],
+	"/": [],
+	"/(connected)/account": [
+		"src/routes/(connected)/account/+page.server.ts",
+		"src/routes/(connected)/+layout.ts",
+		"src/routes/(connected)/+layout.server.ts"
+	],
+	"/api/cron/followers-count": [
+		"src/routes/api/cron/followers-count/+server.ts"
+	],
+	"/api/cron/page-views": [
+		"src/routes/api/cron/page-views/+server.ts"
+	],
+	"/api/cron/test": [
+		"src/routes/api/cron/test/+server.ts"
+	],
+	"/api/facebook/accounts": [
+		"src/routes/api/facebook/accounts/+server.ts"
+	],
+	"/api/facebook/completions": [
+		"src/routes/api/facebook/completions/+server.ts"
+	],
+	"/api/facebook/tokens": [
+		"src/routes/api/facebook/tokens/+server.ts"
+	],
+	"/api/metrics/init": [
+		"src/routes/api/metrics/init/+server.ts"
+	],
+	"/api/onboarding/completions": [
+		"src/routes/api/onboarding/completions/+server.ts"
+	],
+	"/api/payment": [
+		"src/routes/api/payment/+server.ts"
+	],
+	"/api/payment/confirm": [
+		"src/routes/api/payment/confirm/+server.ts"
+	],
+	"/auth/auth-code-error": [],
+	"/auth/callback": [
+		"src/routes/auth/callback/+server.ts"
+	],
+	"/(connected)/automated": [
+		"src/routes/(connected)/+layout.ts",
+		"src/routes/(connected)/+layout.server.ts"
+	],
+	"/(connected)/chat": [
+		"src/routes/(connected)/+layout.ts",
+		"src/routes/(connected)/+layout.server.ts"
+	],
+	"/createpost": [],
+	"/(connected)/dashboard": [
+		"src/routes/(connected)/+layout.ts",
+		"src/routes/(connected)/+layout.server.ts"
+	],
+	"/(connected)/insights": [
+		"src/routes/(connected)/+layout.ts",
+		"src/routes/(connected)/+layout.server.ts"
+	],
+	"/(not-connected)/login": [
+		"src/routes/(not-connected)/login/+page.server.ts"
+	],
+	"/(not-connected)/logout": [],
+	"/(non-dashboard)/onboarding": [
+		"src/routes/(non-dashboard)/onboarding/+page.server.ts",
+		"src/routes/(non-dashboard)/+layout.ts",
+		"src/routes/(non-dashboard)/+layout.server.ts"
+	],
+	"/(connected)/payment/payment": [
+		"src/routes/(connected)/payment/payment/+page.server.ts",
+		"src/routes/(connected)/+layout.ts",
+		"src/routes/(connected)/+layout.server.ts"
+	],
+	"/(connected)/payment/process": [
+		"src/routes/(connected)/+layout.ts",
+		"src/routes/(connected)/+layout.server.ts"
+	],
+	"/(connected)/post": [
+		"src/routes/(connected)/+layout.ts",
+		"src/routes/(connected)/+layout.server.ts"
+	],
+	"/(connected)/promotions": [
+		"src/routes/(connected)/+layout.ts",
+		"src/routes/(connected)/+layout.server.ts"
+	],
+	"/(connected)/promo": [
+		"src/routes/(connected)/+layout.ts",
+		"src/routes/(connected)/+layout.server.ts"
+	],
+	"/(not-connected)/reset-password": [],
+	"/(connected)/sandbox": [
+		"src/routes/(connected)/sandbox/+page.server.ts",
+		"src/routes/(connected)/+layout.ts",
+		"src/routes/(connected)/+layout.server.ts"
+	],
+	"/(connected)/schedule": [
+		"src/routes/(connected)/+layout.ts",
+		"src/routes/(connected)/+layout.server.ts"
+	],
+	"/(connected)/settings": [
+		"src/routes/(connected)/+layout.ts",
+		"src/routes/(connected)/+layout.server.ts"
+	],
+	"/(connected)/settings/accounts": [
+		"src/routes/(connected)/settings/accounts/+page.server.ts",
+		"src/routes/(connected)/+layout.ts",
+		"src/routes/(connected)/+layout.server.ts"
+	],
+	"/(connected)/settings/audience-profiles": [
+		"src/routes/(connected)/settings/audience-profiles/+page.server.ts",
+		"src/routes/(connected)/+layout.ts",
+		"src/routes/(connected)/+layout.server.ts"
+	],
+	"/(connected)/settings/billing": [
+		"src/routes/(connected)/+layout.ts",
+		"src/routes/(connected)/+layout.server.ts"
+	],
+	"/(connected)/settings/business-info": [
+		"src/routes/(connected)/+layout.ts",
+		"src/routes/(connected)/+layout.server.ts"
+	],
+	"/(connected)/settings/business-info/custom": [
+		"src/routes/(connected)/+layout.ts",
+		"src/routes/(connected)/+layout.server.ts"
+	],
+	"/(connected)/settings/business-info/from-account": [
+		"src/routes/(connected)/settings/business-info/from-account/+page.server.ts",
+		"src/routes/(connected)/+layout.ts",
+		"src/routes/(connected)/+layout.server.ts"
+	],
+	"/(connected)/settings/users": [
+		"src/routes/(connected)/+layout.ts",
+		"src/routes/(connected)/+layout.server.ts"
+	],
+	"/(connected)/sharepost": [
+		"src/routes/(connected)/+layout.ts",
+		"src/routes/(connected)/+layout.server.ts"
+	],
+	"/(not-connected)/signup": [
+		"src/routes/(not-connected)/signup/+page.server.ts"
+	]
+}
